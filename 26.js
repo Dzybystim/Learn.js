@@ -1,24 +1,24 @@
-const fetchUserFromServer = (username, onSuccess, onError) => {
-  console.log(`Fetching data for ${username}`);
+// Отримати дані з API і вивести їх на сторінку
+// https://dog.ceo/dog-api/
 
-  setTimeout(() => {
-    // Change value of isSuccess variable to simulate request status
-    const isSuccess = true;
+fetch('https://dog.ceo/api/breeds/image/random')
+.then(response => {
+  response.json()
+console.log(response)
+if(response.status===404) {
+  throw new Error('Упс')
+}
+})
+.then(data => updateImg (data.message))
+.catch(error => console.log(error))
 
-    if (isSuccess) {
-      onSuccess("success value");
-    } else {
-      onError("error");
-    }
-  }, 2000);
-};
+function updateImg (img) {
+  const imgElement = document.querySelector('.dog');
+  imgElement.src=img;
+}
 
-const onFetchSuccess = user => {
-  console.log(user);
-};
-
-const onFetchError = error => {
-  console.error(error);
-};
-
-fetchUserFromServer("Mango", onFetchSuccess, onFetchError);
+function renderError (error) {
+  const spanElement = document.querySelector('.error');
+  console.log(spanElement);
+  spanElement.textContent=error;
+}
